@@ -16,15 +16,22 @@ uptodate();
 // should read file from the disk for html
 function uptodate()
 {
-  console.log(1);
-   fs.readFile('./index.html', function (err, html) {
+  console.log(`Server running at http://${hostname}:${port}/`);
+   fs.readFile('public/index.html', function (err, html) {
     if (err) {
       throw err; 
     }       
     htmlfile = html;
   });
   // should read css from the disk for css
-   fs.readFile('./style.css', function (err, html) {
+  fs.readFile('bootstrap/3.3.7/css/bootstrap.min.css', function (err, html) {
+    if (err) {
+      throw err; 
+    }       
+    cssfile = html;
+  });
+
+  fs.readFile('public/css/custom.css', function (err, html) {
     if (err) {
       throw err; 
     }       
@@ -32,7 +39,21 @@ function uptodate()
   });
 
   // should read js file from the disk
-  fs.readFile('./app.js', function (err, html) {
+  fs.readFile('ajax/libs/jquery/3.2.1/jquery.min.js', function (err, html) {
+    if (err) {
+      throw err; 
+    }       
+    jsfile = html;
+  });
+
+  fs.readFile('bootstrap/3.3.7/js/bootstrap.min.js', function (err, html) {
+    if (err) {
+      throw err; 
+    }       
+    jsfile = html;
+  });
+
+  fs.readFile('public/js/custom.js', function (err, html) {
     if (err) {
       throw err; 
     }       

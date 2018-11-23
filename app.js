@@ -1,56 +1,111 @@
-var http = require("http");
-var fs = require('fs');
+const http = require('http');
+const fs = require('fs');
 
-http.createServer(function(request, response) {
-	var url = request.url;
-	switch(url) {
-		case '/':
-			getStaticFileContent(response, 'public/index.html', 'text/html');
-			break;
-		case '/home':
-			getStaticFileContent(response, 'public/index.html', 'text/html');
-			break;
-		case '/index':
-			getStaticFileContent(response, 'public/index.html', 'text/html');
-			break;
-		case '/default':
-			getStaticFileContent(response, 'public/index.html', 'text/html');
-			break;
-		case '/about':
-			getStaticFileContent(response, 'public/about.html', 'text/html');
-			break;
-		case '/contact':
-			getStaticFileContent(response, 'public/contact.html', 'text/html');
-			break;
-		case '/team':
-			getStaticFileContent(response, 'public/team.html', 'text/html');
-			break;
-		case '/bootstrapcss':
-			getStaticFileContent(response, 'bootstrap/3.3.7/css/bootstrap.min.css', 'text/css');
-			break;
-		case '/jquery':
-			getStaticFileContent(response, 'ajax/libs/jquery/3.2.1/jquery.min.js', 'text/javascript');
-			break;
-		case '/bootstrapjs':
-			getStaticFileContent(response, 'bootstrap/3.3.7/js/bootstrap.min.js', 'text/javascript');
-			break;
-		default:
-			response.writeHead(404, {'Content-Type':'text/plain'});
-			response.end('404 - Page not found.')
-	}
-}).listen(9099);
-console.log('Server running at http://localhost:9099');
+const hostname = '127.0.0.1';
+const port = 3000;
+const timer = 300;
 
-function getStaticFileContent(response, filepath, contentType) {
-	fs.readFile(filepath, function(error, data) {
-		if(error) {
-			response.writeHead(500, {'Content-Type':'text/plain'});
-			response.end('500 - Internal Server Error.');
+let indexHTML = '';
+let bootstrapCSS = '';
+let customCSS = '';
+let jqueryJS = '';
+let bootstrapJS = '';
+let customJS = '';
+
+uptodate();
+
+function uptodate() {
+	var gtimex = new Date().toLocaleTimeString();
+	console.log(`Server running at http://${hostname}:${port}/ | ${gtimex}`);
+
+	fs.readFile('public/index.html', function (errINDEX, htmlINDEX) {
+		if (errINDEX) {
+			throw errINDEX;
 		}
-
-		if(data) {
-			response.writeHead(500, {'Content-Type':'text/html' || 'text/css' || 'text/javascript'});
-			response.end(data);
-		}
+		indexHTML = htmlINDEX;
 	});
+
+	fs.readFile('bootstrap/3.3.7/css/bootstrap.min.css', function (errBOOTSTRAP_CSS, cssBOOTSTRAP) {
+		if (errBOOTSTRAP_CSS) {
+			throw errBOOTSTRAP_CSS;
+		}
+		bootstrapCSS = cssBOOTSTRAP;
+	});
+
+	fs.readFile('public/css/custom.css', function (errCUSTOM_CSS, cssCUSTOM) {
+		if (errCUSTOM_CSS) {
+			throw errCUSTOM_CSS;
+		}
+		customCSS = cssCUSTOM;
+	});
+
+	fs.readFile('ajax/libs/jquery/3.2.1/jquery.min.js', function (errJQUERY, jsJQUERY) {
+		if (errJQUERY) {
+			throw errJQUERY;
+		}
+		jqueryJS = jsJQUERY;
+	});
+
+	fs.readFile('bootstrap/3.3.7/js/bootstrap.min.js', function (errBOOTSTRAP_JS, jsBOOTSTRAP) {
+		if (errBOOTSTRAP_JS) {
+			throw errBOOTSTRAP_JS;
+		}
+		bootstrapJS = jsBOOTSTRAP;
+	});
+
+	fs.readFile('public/js/custom.js', function (errCUSTOM_JS, jsCUSTOM) {
+		if (errCUSTOM_JS) {
+			throw errCUSTOM_JS;
+		}
+		customJS = jsCUSTOM;
+	});
+
+	setTimeout(function(){ uptodate(); }, 2000);
 }
+
+const server = http.createServer((req, res) => {
+	res.statusCode = 200;
+
+	if(req.url.indexOf('bootstrap.min.css') != -1){
+		res.writeHead(200, {'Content-Type': 'text/css'});
+		res.write(bootstrapCSS);
+		res.end();
+		return;
+	}
+
+	if(req.url.indexOf('custom.css') != -1){
+		res.writeHead(200, {'Content-Type': 'text/css'});
+		res.write(customCSS);
+		res.end();
+		return;
+	}
+
+	if(req.url.indexOf('jquery.min.js') != -1){
+		res.writeHead(200, {'Content-Type': 'text/javascript'});
+		res.write(jqueryJS);
+		res.end();
+		return;
+	}
+
+	if(req.url.indexOf('bootstrap.min.js') != -1){
+		res.writeHead(200, {'Content-Type': 'text/javascript'});
+		res.write(bootstrapJS);
+		res.end();
+		return;
+	}
+
+	if(req.url.indexOf('custom.js') != -1){
+		res.writeHead(200, {'Content-Type': 'text/javascript'});
+		res.write(customJS);
+		res.end();
+		return;
+	}
+
+	res.writeHeader(200, {"Content-Type": "text/html"});  
+	res.write(indexHTML);
+	res.end();
+});
+
+server.listen(port, hostname, () => {
+	console.log(`Server running at http://${hostname}:${port}/`);
+});
