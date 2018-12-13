@@ -64,6 +64,11 @@ http.createServer(function(request, response) {
 			getStaticFileContent_CSS(response, 'public/css/custom.css', 'text/css');
 			break;
 
+		// fontawsome css
+		case '/fontawesome':
+			getStaticFileContent_CSS(response, 'ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css', 'text/css');
+			break;
+
 		// jQuery
 		case '/jquery':
 			getStaticFileContent_JS(response, 'ajax/libs/jquery/3.2.1/jquery.min.js', 'text/javascript');
