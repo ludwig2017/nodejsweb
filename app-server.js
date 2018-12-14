@@ -13,25 +13,25 @@ http.createServer(function(request, response) {
 
 		// page view
 		case '/':
-			getStaticFileContent(response, 'public/index.html', 'text/html');
+			getStaticFileContent(response, 'resources/views/index.html', 'text/html');
 			break;
 		case '/home':
-			getStaticFileContent(response, 'public/index.html', 'text/html');
+			getStaticFileContent(response, 'resources/views/index.html', 'text/html');
 			break;
 		case '/index':
-			getStaticFileContent(response, 'public/index.html', 'text/html');
+			getStaticFileContent(response, 'resources/views/index.html', 'text/html');
 			break;
 		case '/default':
-			getStaticFileContent(response, 'public/index.html', 'text/html');
+			getStaticFileContent(response, 'resources/views/index.html', 'text/html');
 			break;
 		case '/about':
-			getStaticFileContent(response, 'public/about.html', 'text/html');
+			getStaticFileContent(response, 'resources/views/about.html', 'text/html');
 			break;
 		case '/contact':
-			getStaticFileContent(response, 'public/contact.html', 'text/html');
+			getStaticFileContent(response, 'resources/views/contact.html', 'text/html');
 			break;
 		case '/team':
-			getStaticFileContent(response, 'public/team.html', 'text/html');
+			getStaticFileContent(response, 'resources/views/team.html', 'text/html');
 			break;
 
 		// bootstrap CSS
@@ -59,7 +59,10 @@ http.createServer(function(request, response) {
 			getStaticFileContent_SVG(response, 'bootstrap/3.3.7/fonts/glyphicons-halflings-regular.svg#glyphicons_halflingsregular', 'image/svg+xml');
 			break;
 
-		// custom css
+		// Default and Custom css
+		case '/stylecss':
+			getStaticFileContent_CSS(response, 'resources/assets/css/style.css', 'text/css');
+			break;
 		case '/customcss':
 			getStaticFileContent_CSS(response, 'public/css/custom.css', 'text/css');
 			break;
@@ -79,7 +82,10 @@ http.createServer(function(request, response) {
 			getStaticFileContent_JS(response, 'bootstrap/3.3.7/js/bootstrap.min.js', 'text/javascript');
 			break;
 
-		// Custom JS
+		// Default and Custom JS
+		case '/scriptjs':
+			getStaticFileContent_JS(response, 'resources/assets/js/script.js', 'text/javascript');
+			break;
 		case '/customjs':
 			getStaticFileContent_JS(response, 'public/js/custom.js', 'text/javascript');
 			break;
